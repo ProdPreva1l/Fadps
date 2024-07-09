@@ -1,0 +1,13 @@
+name: Fadps
+version: '${version}'
+main: info.preva1l.fadps.Fadps
+api-version: '1.20'
+depend: [Vault, LuckPerms]
+authors: [Preva1l]
+description: The main plugin that handles everything!
+website: https://please.vote-preva1l.today/
+folia-supported: true
+
+permissions:
+  fadps.max-editor-size.<amount>:
+    description: Size in bytes that a users editor can be.
