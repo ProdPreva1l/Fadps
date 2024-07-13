@@ -7,10 +7,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Leaderboards {
-    public final Map<Integer, User> levels = new ConcurrentHashMap<>();
+    private final Map<Integer, User> levels = new ConcurrentHashMap<>();
 
     public String getUsernameAtPosition(int position) {
         return levels.get(position).getUsername();
+    }
+
+    public int getLeaderboardPosition(User user) {
+        for (int position : levels.keySet()) {
+            if (levels.get(position).equals(user)) return position;
+        }
+        return -1;
     }
 
     public void loadLeaderboards() {

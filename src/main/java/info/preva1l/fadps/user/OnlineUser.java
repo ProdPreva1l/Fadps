@@ -1,12 +1,10 @@
 package info.preva1l.fadps.user;
 
 import info.preva1l.fadps.Fadps;
+import info.preva1l.fadps.database.PermissionsData;
 import info.preva1l.fadps.levels.Level;
-import info.preva1l.fadps.levels.PlayableLevel;
-import info.preva1l.fadps.levels.editor.EditableLevel;
 import info.preva1l.fadps.utils.Text;
 import lombok.Getter;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -22,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 public final class OnlineUser extends User implements CommandUser {
     private final Player audience;
     private final Fadps plugin;
+    private Level level;
 
     private OnlineUser(@NotNull Player player) {
         super(player.getName(), player.getUniqueId());
@@ -34,11 +33,23 @@ public final class OnlineUser extends User implements CommandUser {
     }
 
     public Level getCurrentLevel() {
-        return PlayableLevel.constructFromDatabase(this, 0, 0, 0, 0, 0, 0);
+        return plugin.getLevelManager().getCurrentLevel(this);
+    }
+
+    public void updateCurrentLevel(Level level) {
+        this.level = level;
     }
 
     public int getMaxEditorSize() {
-        return 500;
+        return PermissionsData.getHighestInt(PermissionsData.PermissionType.MAX_EDITOR_SIZE, this);
+    }
+
+    public int getLeaderboardPosition() {
+        return plugin.getLeaderboards().getLeaderboardPosition(this);
+    }
+
+    public String getPlaytime() {
+        return "2d, 10h, 3m, 6s";
     }
 
     public void sendClickableMessage(@NotNull String message, @NotNull ClickEvent clickEvent, Object... replacements) {
@@ -79,6 +90,6 @@ public final class OnlineUser extends User implements CommandUser {
 
     @Override
     public boolean hasPermission(@NotNull String permission) {
-        return false;
+        return audience.hasPermission(permission);
     }
 }

@@ -14,4 +14,12 @@ public abstract class Level {
     private final BoundingBox checkpoint;
 
     @Setter private Difficulty difficulty = Difficulty.EASY;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Level level) {
+            return level.id == this.id;
+        }
+        return false;
+    }
 }

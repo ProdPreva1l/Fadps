@@ -37,7 +37,7 @@ public abstract class BasicCommand {
      * @param sender command sender
      * @param args command args
      * @return true if the subcommand was executed,
-     * false if the sender does not have permission or if the sender was console on a player only command
+     * false if the command does not exist
      */
     public boolean subCommandExecutor(CommandUser sender, String[] args) {
         for (BasicSubCommand subCommand : subCommands) {
@@ -46,12 +46,12 @@ public abstract class BasicCommand {
 
                 if (subCommand.getInfo().inGameOnly() && sender instanceof ConsoleUser) {
                     sender.sendMessage(plugin.getLang().getCommands().getMustBePlayer());
-                    return false;
+                    return true;
                 }
 
                 if (!subCommand.getInfo().permission().isEmpty() && !sender.hasPermission(subCommand.getInfo().permission())) {
                     sender.sendMessage(plugin.getLang().getCommands().getNoPermission());
-                    return false;
+                    return true;
                 }
 
                 if (subCommand.getInfo().async()) {

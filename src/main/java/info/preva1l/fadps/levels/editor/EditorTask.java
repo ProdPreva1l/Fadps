@@ -31,9 +31,9 @@ public final class EditorTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (viewer.getCurrentLevel() != level) {
+        if (!viewer.getCurrentLevel().equals(level)) {
             this.cancel();
-            viewer.getPlayer().setWorldBorder(null);
+            viewer.getAudience().setWorldBorder(null);
             bossBar.setVisible(false);
             bossBar.removeAll();
             return;
@@ -41,10 +41,10 @@ public final class EditorTask extends BukkitRunnable {
         WorldBorder worldBorder = Bukkit.createWorldBorder();
         worldBorder.setCenter(level.getCenterX(), level.getCenterZ());
         worldBorder.setSize(level.getSize());
-        viewer.getPlayer().setWorldBorder(worldBorder);
+        viewer.getAudience().setWorldBorder(worldBorder);
 
         int used = level.getCurrentFileSize();
-        int max = level.getCurrentFileSize();
+        int max = level.getMaxFileSize();
         int percent = used/max * 100;
 
         BarColor color = BarColor.GREEN;

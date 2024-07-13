@@ -1,6 +1,5 @@
 package info.preva1l.fadps.utils.commands;
 
-import com.sk89q.worldedit.extension.platform.Platform;
 import info.preva1l.fadps.Fadps;
 import info.preva1l.fadps.user.CommandUser;
 import info.preva1l.fadps.user.ConsoleUser;
@@ -25,13 +24,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public abstract class CommandManager {
+public class CommandManager {
     protected final Fadps plugin;
     protected final List<BasicCommand> loadedCommands;
 
     private final Field COMMAND_MAP_FIELD;
 
-    protected CommandManager(Fadps plugin) {
+    public CommandManager(Fadps plugin) {
         this.plugin = plugin;
         this.loadedCommands = new ArrayList<>();
         try {
@@ -44,10 +43,9 @@ public abstract class CommandManager {
 
     /**
      * Register a new command.
-     * @param platform the platform that the commands code will run on.
      * @param basicCommand the command.
      */
-    public void registerCommand(Platform platform, BasicCommand basicCommand) {
+    public void registerCommand(BasicCommand basicCommand) {
         getCommandMap(Bukkit.getServer()).register("fadps", new CommandExecutor(basicCommand));
         loadedCommands.add(basicCommand);
         plugin.getLogger().info(String.format("Registered Command %s", basicCommand.getInfo().name()));

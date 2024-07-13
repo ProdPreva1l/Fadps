@@ -3,6 +3,7 @@ package info.preva1l.fadps.utils;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -10,6 +11,24 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public final class Text {
+    private final Pattern HEX_PATTERN = Pattern.compile("&#(\\w{5}[0-9a-fA-F])");
+
+    /**
+     * Colorize  a string.
+     * @param text String with color codes or hex codes.
+     * @return Colorized String
+     */
+    public String colorize(String text) {
+        Matcher matcher = HEX_PATTERN.matcher(text);
+        StringBuilder buffer = new StringBuilder();
+
+        while(matcher.find()) {
+            matcher.appendReplacement(buffer, ChatColor.of("#" + matcher.group(1)).toString());
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    }
+
     /**
      * Converts legacy colour codes to MiniMessage.
      * @param message message with legacy codes
@@ -94,7 +113,7 @@ public final class Text {
     /**
      * Takes a string formatted in minimessage OR legacy and turns it into an Adventure Component.
      * @param message the modernMessage
-     * @param replacements placeholders formatted with {@link MiniStringConverter#formatPlaceholders(String, Object...)}
+     * @param replacements placeholders formatted with {@link Text#formatPlaceholders(String, Object...)}
      * @return colorized component
      */
     public Component modernMessage(@NotNull String message, Object... replacements) {
@@ -104,11 +123,11 @@ public final class Text {
     /**
      * Takes a string formatted in minimessage OR legacy and turns it into a legacy String.
      * @param message the modernMessage
-     * @param replacements placeholders formatted with {@link MiniStringConverter#formatPlaceholders(String, Object...)}
+     * @param replacements placeholders formatted with {@link Text#formatPlaceholders(String, Object...)}
      * @return colorized component
      */
     public String legacyMessage(@NotNull String message, Object... replacements) {
-        return (formatPlaceholders(message, replacements));
+        return colorize(formatPlaceholders(message, replacements));
     }
 
     /**

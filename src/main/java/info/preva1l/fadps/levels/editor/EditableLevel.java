@@ -9,6 +9,7 @@ import info.preva1l.fadps.levels.Level;
 import info.preva1l.fadps.levels.PlayableLevel;
 import info.preva1l.fadps.levels.Schematic;
 import info.preva1l.fadps.user.OnlineUser;
+import info.preva1l.fadps.user.User;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,13 +37,13 @@ public final class EditableLevel extends Level {
      */
     private int maxFileSize;
 
-    private EditableLevel(int id, String name, double centerX, double centerZ, @NotNull OnlineUser player) {
-        super(id, name, player.unlink(), "edit.schem", BoundingBox.of(new Location(Bukkit.getWorld("parkour"), centerX, 77.5, centerZ), 1.5, 141.5, 1.5));
+    public EditableLevel(int id, String name, double centerX, double centerZ, @NotNull User player) {
+        super(id, name, player, "edit.schem", BoundingBox.of(new Location(Bukkit.getWorld("parkour"), centerX, 77.5, centerZ), 1.5, 141.5, 1.5));
         this.centerX = centerX;
         this.centerZ = centerZ;
 
         this.schematic = new Schematic("");
-        this.maxFileSize = player.getMaxEditorSize();
+        this.maxFileSize = 500;
     }
 
     public void save() {

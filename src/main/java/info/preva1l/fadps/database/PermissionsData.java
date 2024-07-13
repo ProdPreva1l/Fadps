@@ -1,5 +1,6 @@
 package info.preva1l.fadps.database;
 
+import info.preva1l.fadps.user.OnlineUser;
 import lombok.AllArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.bukkit.entity.Player;
@@ -9,10 +10,10 @@ import java.util.Set;
 
 @UtilityClass
 public class PermissionsData {
-    public int getHighestInt(PermissionType type, Player player) {
+    public int getHighestInt(PermissionType type, OnlineUser player) {
         int currentMax = 0;
         boolean matched = false;
-        final Set<PermissionAttachmentInfo> finalEffectivePermissions = player.getEffectivePermissions(); // "Thread Safe"
+        final Set<PermissionAttachmentInfo> finalEffectivePermissions = player.getAudience().getEffectivePermissions(); // "Thread Safe"
         for (PermissionAttachmentInfo effectivePermission : finalEffectivePermissions) {
             if (!effectivePermission.getPermission().startsWith(type.permissionString)) continue;
             String numberStr = effectivePermission.getPermission().substring(type.permissionString.length());
@@ -26,10 +27,10 @@ public class PermissionsData {
         return matched ? currentMax : (int) type.def;
     }
 
-    public double getHighestDouble(PermissionType type, Player player) {
+    public double getHighestDouble(PermissionType type, OnlineUser player) {
         double currentMax = 0;
         boolean matched = false;
-        final Set<PermissionAttachmentInfo> finalEffectivePermissions = player.getEffectivePermissions(); // "Thread Safe"
+        final Set<PermissionAttachmentInfo> finalEffectivePermissions = player.getAudience().getEffectivePermissions(); // "Thread Safe"
         for (PermissionAttachmentInfo effectivePermission : finalEffectivePermissions) {
             if (!effectivePermission.getPermission().startsWith(type.permissionString)) continue;
             String numberStr = effectivePermission.getPermission().substring(type.permissionString.length());
